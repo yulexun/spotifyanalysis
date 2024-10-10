@@ -1,4 +1,4 @@
-# spotifyanalysis
+# Analysis of three artists' Spotify Data
 
 ## Overview
 This paper analyzes the music metadata of three artists **A Boogie Wit da Hoodie**, **Radiohead**, and **Pay money To my Pain** by using the Spotify API to retrieve their audio features. The primary focus of the study is to explore the relationship between song length, release dates, key types, and energy levels for the artists' songs. By visualizing the distribution of song durations and comparing the frequency of major and minor keys, this analysis provides insight into the musical preferences and characteristics of these artists.
