@@ -7,7 +7,7 @@ author:
   - Yuxuan Wei
 date: today
 date-format: long
-abstract: "Use the Spotify API to analyze data about ... "
+abstract: "Use the Spotify API to analyze data about three artists A Boogie Wit da Hoodie, Radiohead and Pay money To my Pain."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -28,7 +28,7 @@ library(lintr)
 library(knitr)
 library(here)
 library(ggplot2)
-library()
+library(janitor)
 ```
 
 ```{r}
@@ -40,19 +40,21 @@ library()
 PTP <- readRDS(here("data/01-raw_data/PTP.rds"))
 radiohead <- readRDS(here("data/01-raw_data/radiohead.rds"))
 boogie <- readRDS(here("data/01-raw_data/boogie.rds"))
-clean_boogie_data <- read_csv(here("data/02-cleaned-data/clean_data.csv"))
+clean_boogie_data <- read_csv(here("data/02-cleaned-data/clean_boogie_data.csv"))
 ```
 
 # Introduction
-This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists. Second, we compare the length of the songs between the three artists, as well as the release date in minutes. Third, we types of keys in "A Boogie Wit da Hoodie", and visualize the Major and Minor keys in their songs.
+This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists in @sec-date-duration. Second, we types of keys in "A Boogie Wit da Hoodie", and visualize the Major and Minor keys in their songs in @sec-key.
 
-This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here], ggplot2 [@ggplot2] and knitr [@knitr].
+This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here], ggplot2 [@ggplot2], janitor [@janitor] and knitr [@knitr]. The data is downloaded from Spotify API [@spotify_api].
 
 
 # Data
 ## Release Date and Duration {#sec-date-duration}
 ```{r}
-#| label: fig-clean-data-year-month-decedents
+#| label: fig-dateduration
+#| fig-cap: The album release date vs duration of song 
+#| fig-subcap: ["boxplot for Boogie","Boxplot for PTP", "Boxplot for radiohead"] 
 #| warning: false
 #| message: false
 #| echo: false
@@ -79,7 +81,7 @@ PTP |>
   mutate(album_release_date = ymd(album_release_date)) |>
   ggplot(aes(
     x = album_release_date,
-    y = duration_ms /60000,
+    y = duration_ms / 60000,
     group = album_release_date
   )) +
   geom_boxplot() +
@@ -107,22 +109,70 @@ radiohead |>
 
 ```
 
-## 
+These three boxplots in in @fig-dateduration display the relationship between album release dates and song durations (in minutes) for A Boogie Wit Da Hoodie, Pay Money to my Pain(PTP), and Radiohead. In @fig-dateduration-1, for A Boogie Wit Da Hoodie, the data reveals a trend where more recent albums feature shorter songs, possibly reflecting the influence of short-form video platforms like TikTok, which encourage brevity in content.
+
+For Pay Money To My Pain (PTP) in @fig-dateduration-2, the 2014 album stands out as significant. This album was released shortly after the death of the band's vocalist, K, in the same year. The boxplot shows a wide range of song durations for this album, likely reflecting the use of many vocal recordings made by K before his passing. This range may also capture the emotional intensity and variation in the music as the band paid tribute to their late vocalist, making it a deeply personal and diverse work.
+
+In contrast, in @fig-dateduration-3, Radiohead exhibits less of this trend, maintaining relatively consistent song durations over time. This might indicate a different creative approach, as Radiohead’s music tends to focus more on experimentation and artistry, rather than following trends in popular media. Together, these boxplots suggest that while some artists adapt to new trends, others continue to focus on traditional album structures.
+
+## Keys in the songs of "A Boogie Wit da Hoodie" {#sec-key}
+In this section we discuss the keys "A Boogie Wit da Hoodie" uses the most, and find the most frequently used Major and Minor keys used by the artist. 
+
 ```{r}
-#| label: fig-clean-data-boogie-key
+#| label: fig-majorvminor
+#| fig-cap: "Number of Songs In Major Key"
+#| echo: false
 #| warning: false
 #| message: false
-#| echo: false
-#| layout-ncol: 3
-#| 
+
 clean_boogie_data %>% ggplot(aes(mode_name)) +
   geom_bar() + theme_minimal() + labs(x = "Key Type (Major or Minor)", y = "Number of Songs")
 
+
+```
+Based on @fig-majorvminor, Boogie With Da Hoodie has released more minor key songs than major key songs. 
+
+
+```{r}
+#| label: fig-allkeycounts
+#| fig-cap: "Number of Songs Per Key"
+#| fig-subcap: ["Major", "Minor"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
 clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(key_name)) +
-  geom_bar() + theme_minimal() + labs(x = "Key Name (Majors)", y = "Number of Songs in Key")
+  geom_bar() + theme_minimal() + labs(x = "Key Name", y = "Number of Songs in Key")
 
 clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
-  geom_bar() + theme_minimal() + labs(x = "Key Name (Minors)", y = "Number of Songs in Key")
+  geom_bar() + theme_minimal() + labs(x = "Key Name", y = "Number of Songs in Key")
+
 ```
+Based on @fig-allkeycounts, in major key, Boogie uses major keys around C# the most. However for minor keys this is the exact opposite, meaning he uses minor keys around C# the least. Instead he uses the F and G minor keys often.
+
+```{r}
+#| label: fig-energy
+#| fig-cap: "Energy Level Distribution For Boogie Songs"
+#| fig-subcap: ["Major", "Minor"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+# For Discussion say they based on this hist there doesn't seem to be a difference
+# in the energy levels of a song given the key
+
+clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(energy)) +
+  geom_histogram(binwidth = 0.03) + theme_minimal() + 
+  labs(x = "Energy", y = "Number of Songs")
+
+clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(energy)) +
+  geom_histogram(binwidth = 0.03) + theme_minimal() + 
+  labs(x = "Energy", y = "Number of Songs")
+
+```
+Based on @fig-energy, both the distribution of energy level per songs for major and minor keys appear to be approximatley normal and sysmetric. Moreover, both histograms show that Boggie's songs energy levels are usually around 0.6.
+
 
 # Bibliography

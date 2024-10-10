@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Downloads and saves the data from SPotify API
-# Author: Lexun Yu
+# Author: Lexun Yu, Colin Sihan Yang, Siddharth Gowda, Yuxuan Wei
 # Date: 10 October 2024
 # Contact: lx.yu@mail.utoronto.ca
 # License: MIT
