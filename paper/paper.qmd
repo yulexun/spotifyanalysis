@@ -1,5 +1,5 @@
 ---
-title: "Analysis of Hitsujibungaku's Spotify Data"
+title: "Analysis of three artists' Spotify Data"
 author: 
   - Lexun Yu
   - Colin Sihan Yang
