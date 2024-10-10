@@ -13,7 +13,7 @@ The repo is structured as:
 -   `data/raw_data` contains the raw data as obtained from Spotify API.
 -   `data/cleaned_data` contains the cleaned dataset that was constructed.
 -   `paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
--   `scripts` contains the R scripts used to simulate, test, download, clean_data, test_analysis_data, exploratory_data_analysis,  model_data and replications.
+-   `scripts` contains the R scripts used to simulate, test, download, clean, test, and exploratory analysis data, and also data to make model and replications.
 
 
 ## Statement on LLM usage
