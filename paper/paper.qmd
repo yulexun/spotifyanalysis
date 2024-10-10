@@ -1,9 +1,10 @@
 ---
-title: "Analysis of ACS 2022"
+title: "Analysis of Hitsujibungaku's Spotify Data"
 author: 
   - Lexun Yu
   - Colin Sihan Yang
   - Siddharth Gowda
+  - Yuxuan Wei
 date: today
 date-format: long
 abstract: "Use the Spotify API to analyze data about ... "
@@ -13,6 +14,11 @@ bibliography: references.bib
 ---
 
 ```{r}
+#| include: false
+#| warning: false
+#| message: false
+#| echo: false
+
 library(spotifyr)
 library(styler)
 library(tidyverse)
@@ -20,13 +26,43 @@ library(tinytex)
 library(usethis)
 library(lintr)
 library(knitr)
+library(here)
 ```
 
 ```{r}
-edit_r_environ()
+#| include: false
+#| warning: false
+#| message: false
+#| echo: false
+
+PTP <- readRDS(here("data/01-raw_data/PTP.rds"))
+radiohead <- readRDS(here("data/01-raw_data/radiohead.rds"))
+boogie <- readRDS(here("data/01-raw_data/boogie.rds"))
 ```
 
+# Introduction
+This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists. Second, we 
+
+This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here] and knitr [@knitr].
+
+
 ```{r}
-radiohead <- get_artist_audio_features("radiohead")
-saveRDS(radiohead, "radiohead.rds")
+boogie <- as_tibble(boogie)
+
+boogie |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
 ```
+
+# Bibliography

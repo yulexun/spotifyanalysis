@@ -1,26 +1,23 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Downloads and saves the data from SPotify API
+# Author: Lexun Yu
+# Date: 10 October 2024
+# Contact: lx.yu@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
-
+# Pre-requisites: None
 
 #### Workspace setup ####
-library(opendatatoronto)
-library(tidyverse)
-# [...UPDATE THIS...]
+library(spotifyr)
+library(usethis)
+
+# edit_r_environ()
 
 #### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
-
-
+boogie <- get_artist_audio_features("A Boogie Wit Da Hoodie")
+radiohead <- get_artist_audio_features("radiohead")
+PTP = get_artist_audio_features("Pay money To my Pain")
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
-
-         
+saveRDS(boogie, "data/01-raw_data/boogie.rds")
+saveRDS(radiohead, "data/01-raw_data/radiohead.rds")
+saveRDS(PTP, "data/01-raw_data/PTP.rds")
