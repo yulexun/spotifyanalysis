@@ -1,7 +1,7 @@
 # spotifyanalysis
 
 ## Overview
-This paper analyzes the music metadata of three artists *A Boogie Wit da Hoodie*, *Radiohead*, and *Pay money To my Pain* by using the Spotify API to retrieve their audio features. The primary focus of the study is to explore the relationship between song length, release dates, key types, and energy levels for the artists' songs. By visualizing the distribution of song durations and comparing the frequency of major and minor keys, this analysis provides insight into the musical preferences and characteristics of these artists.
+This paper analyzes the music metadata of three artists **A Boogie Wit da Hoodie**, **Radiohead**, and **Pay money To my Pain** by using the Spotify API to retrieve their audio features. The primary focus of the study is to explore the relationship between song length, release dates, key types, and energy levels for the artists' songs. By visualizing the distribution of song durations and comparing the frequency of major and minor keys, this analysis provides insight into the musical preferences and characteristics of these artists.
 
 The results indicate that A Boogie Wit da Hoodie tends to favor minor keys, with a notable preference for F and G minor, while major keys are less frequent, particularly around C#. Additionally, an energy analysis revealed no significant difference in the energy levels of songs based on the key type, with most songs having moderate energy levels around 0.6. These findings offer a glimpse into the compositional style of A Boogie Wit da Hoodie and, to a lesser extent, the other two artists, showing patterns that reflect broader trends in their respective genres—hip-hop, alternative rock, and post-hardcore.
 
