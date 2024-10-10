@@ -111,6 +111,19 @@ PTP |>
 ```
 
 ```{r}
+explicit_summary <- boogie %>%
+  group_by(explicit) %>%
+  summarise(count = n())
+
+ggplot(explicit_summary, aes(x = as.factor(explicit), y = count, fill = as.factor(explicit))) +
+  geom_bar(stat = "identity") +
+  labs(x = "Explicit (1 = Yes, 0 = No)", y = "Number of Songs", 
+       title = "Number of Explicit vs Non-Explicit Songs for Boogie",
+       fill = "Explicit") +
+  theme_minimal()
+```
+
+```{r}
 explicit_summary <- PTP %>%
   group_by(explicit) %>%
   summarise(count = n())
@@ -118,7 +131,7 @@ explicit_summary <- PTP %>%
 ggplot(explicit_summary, aes(x = as.factor(explicit), y = count, fill = as.factor(explicit))) +
   geom_bar(stat = "identity") +
   labs(x = "Explicit (1 = Yes, 0 = No)", y = "Number of Songs", 
-       title = "Number of Explicit vs Non-Explicit Songs",
+       title = "Number of Explicit vs Non-Explicit Songs for PTP",
        fill = "Explicit") +
   theme_minimal()
 ```
