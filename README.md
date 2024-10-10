@@ -5,8 +5,6 @@ This paper analyzes the music metadata of three artists **A Boogie Wit da Hoodie
 
 The results indicate that A Boogie Wit da Hoodie tends to favor minor keys, with a notable preference for F and G minor, while major keys are less frequent, particularly around C#. Additionally, an energy analysis revealed no significant difference in the energy levels of songs based on the key type, with most songs having moderate energy levels around 0.6. These findings offer a glimpse into the compositional style of A Boogie Wit da Hoodie and, to a lesser extent, the other two artists, showing patterns that reflect broader trends in their respective genres—hip-hop, alternative rock, and post-hardcore.
 
-Future work could involve expanding the dataset to include more audio features, such as tempo and danceability, as well as conducting cross-genre comparisons between artists from different musical backgrounds. These insights could help in understanding how certain audio features correlate with an artist's popularity or influence over time.
-
 
 ## File Structure
 
