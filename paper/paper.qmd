@@ -27,6 +27,8 @@ library(usethis)
 library(lintr)
 library(knitr)
 library(here)
+library(ggplot2)
+library()
 ```
 
 ```{r}
@@ -38,22 +40,31 @@ library(here)
 PTP <- readRDS(here("data/01-raw_data/PTP.rds"))
 radiohead <- readRDS(here("data/01-raw_data/radiohead.rds"))
 boogie <- readRDS(here("data/01-raw_data/boogie.rds"))
+clean_boogie_data <- read_csv(here("data/02-cleaned-data/clean_data.csv"))
 ```
 
 # Introduction
-This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists. Second, we 
+This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists. Second, we compare the length of the songs between the three artists, as well as the release date in minutes. Third, we types of keys in "A Boogie Wit da Hoodie", and visualize the Major and Minor keys in their songs.
 
-This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here] and knitr [@knitr].
+This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here], ggplot2 [@ggplot2] and knitr [@knitr].
 
 
+# Data
+## Release Date and Duration {#sec-date-duration}
 ```{r}
+#| label: fig-clean-data-year-month-decedents
+#| warning: false
+#| message: false
+#| echo: false
+#| layout-ncol: 3
+
 boogie <- as_tibble(boogie)
 
 boogie |>
   mutate(album_release_date = ymd(album_release_date)) |>
   ggplot(aes(
     x = album_release_date,
-    y = duration_ms,
+    y = duration_ms /60000,
     group = album_release_date
   )) +
   geom_boxplot() +
@@ -61,8 +72,57 @@ boogie |>
   theme_minimal() +
   labs(
     x = "Album release date",
-    y = "Duration of song (ms)"
+    y = "Duration of song (min)"
   )
+
+PTP |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms /60000,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (min)"
+  )
+
+radiohead |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms / 60000,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (min)"
+  )
+
+```
+
+## 
+```{r}
+#| label: fig-clean-data-boogie-key
+#| warning: false
+#| message: false
+#| echo: false
+#| layout-ncol: 3
+#| 
+clean_boogie_data %>% ggplot(aes(mode_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Type (Major or Minor)", y = "Number of Songs")
+
+clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name (Majors)", y = "Number of Songs in Key")
+
+clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name (Minors)", y = "Number of Songs in Key")
 ```
 
 # Bibliography
