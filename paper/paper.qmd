@@ -172,7 +172,9 @@ clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(energy)) +
   labs(x = "Energy", y = "Number of Songs")
 
 ```
+
 Based on @fig-energy, both the distribution of energy level per songs for major and minor keys appear to be approximatley normal and sysmetric. Moreover, both histograms show that Boggie's songs energy levels are usually around 0.6.
 
+\newpage
 
 # Bibliography
