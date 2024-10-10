@@ -71,6 +71,9 @@ PTP = readRDS("PTP.rds")
 ```
 
 ```{r}
+#| label: fig-clean-data-year-month-decedents
+#| echo: false
+#| layout-nrow: 3
 
 boogie <- as_tibble(boogie)
 
@@ -89,7 +92,41 @@ boogie |>
     y = "Duration of song (ms)"
   )
 
+PTP |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+
+radiohead |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+
+
+
 ```
+
+
 
 ```{r}
 PTP <- as_tibble(PTP)
