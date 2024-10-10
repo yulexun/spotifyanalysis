@@ -4,7 +4,6 @@ author:
   - Lexun Yu
   - Colin Sihan Yang
   - Siddharth Gowda
-  - Tanmay Shinde
 date: today
 date-format: long
 abstract: "Use the Spotify API to analyze data about ... "
@@ -12,3 +11,22 @@ format: pdf
 number-sections: true
 bibliography: references.bib
 ---
+
+```{r}
+library(spotifyr)
+library(styler)
+library(tidyverse)
+library(tinytex)
+library(usethis)
+library(lintr)
+library(knitr)
+```
+
+```{r}
+edit_r_environ()
+```
+
+```{r}
+radiohead <- get_artist_audio_features("radiohead")
+saveRDS(radiohead, "radiohead.rds")
+```
