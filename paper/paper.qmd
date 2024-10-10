@@ -11,4 +11,132 @@ abstract: "Use the Spotify API to analyze data about ... "
 format: pdf
 number-sections: true
 bibliography: references.bib
+toc: true
 ---
+
+
+```{r}
+# install.packages("spotifyr")
+# install.packages("tidyverse")
+# install.packages("here")
+# install.packages("tinytex")
+# install.packages("dplyr")
+# install.packages("tibble")
+# install.packages("opendatatoronto")
+# install.packages("janitor")
+# install.packages("ggplot2")
+# install.packages("knitr")
+# install.packages("tesseract")
+library(babynames)
+library(gh)
+library(here)
+library(httr)
+library(janitor)
+library(jsonlite)
+library(knitr)
+library(lubridate)
+library(pdftools)
+library(purrr)
+library(rvest)
+library(spotifyr)
+library(tesseract)
+library(tidyverse)
+library(usethis)
+library(xml2)
+```
+
+# Get Spotify Access
+```{r}
+Sys.setenv(SPOTIFY_CLIENT_ID = 'fa302d336c68442a9c10250efda1f07a')
+Sys.setenv(SPOTIFY_CLIENT_SECRET = 'd17f5eb4d5494842b4f8158df0654b4f')
+
+access_token <- get_spotify_access_token()
+```
+
+```{r}
+radiohead <- get_artist_audio_features("radiohead")
+saveRDS(radiohead, "radiohead.rds")
+```
+
+```{r}
+boogie <- get_artist_audio_features("A Boogie Wit Da Hoodie")
+saveRDS(boogie, "boogie.rds")
+boogie = readRDS("boogie.rds")
+```
+
+```{r}
+PTP = get_artist_audio_features("Pay money To my Pain")
+saveRDS(PTP, "PTP.rds")
+PTP = readRDS("PTP.rds")
+```
+
+```{r}
+
+boogie <- as_tibble(boogie)
+
+boogie |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+
+```
+
+```{r}
+PTP <- as_tibble(PTP)
+
+PTP |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+```
+
+```{r}
+explicit_summary <- PTP %>%
+  group_by(explicit) %>%
+  summarise(count = n())
+
+ggplot(explicit_summary, aes(x = as.factor(explicit), y = count, fill = as.factor(explicit))) +
+  geom_bar(stat = "identity") +
+  labs(x = "Explicit (1 = Yes, 0 = No)", y = "Number of Songs", 
+       title = "Number of Explicit vs Non-Explicit Songs",
+       fill = "Explicit") +
+  theme_minimal()
+```
+
+```{r}
+rbind(boogie, PTP, radiohead) |>
+  select(artist_name, album_release_date, loudness) |>
+  mutate(album_release_date = ymd(album_release_date)) |> 
+  ggplot(aes( x = album_release_date, y = loudness, color = artist_name)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth() +
+  theme_minimal() +
+  facet_wrap(facets = vars(artist_name), dir = "v") +
+  labs(
+    x = "Album release date",
+    y = "loudness",
+    color = "Artist"
+  ) +
+  scale_color_brewer(palette = "Set1") +
+  theme(legend.position = "bottom")
+```
