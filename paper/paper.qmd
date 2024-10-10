@@ -26,28 +26,59 @@ clean_boogie_data <- read_csv("../data/clean_data.csv")
 
 
 # Results
-
 ```{r}
+#| label: fig-majorvminor
+#| fig-cap: "Number of Songs In Major Key"
+#| echo: false
+#| warning: false
+#| message: false
 
 clean_boogie_data %>% ggplot(aes(mode_name)) +
   geom_bar() + theme_minimal() + labs(x = "Key Type (Major or Minor)", y = "Number of Songs")
 
-clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(key_name)) +
-  geom_bar() + theme_minimal() + labs(x = "Key Name (Majors)", y = "Number of Songs in Key")
-
-clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
-  geom_bar() + theme_minimal() + labs(x = "Key Name (Minors)", y = "Number of Songs in Key")
 
 ```
+Based on @fig-majorvminor, Boogie With Da Hoodie has released more minor key songs than major key songs. 
+
+
 ```{r}
+#| label: fig-allkeycounts
+#| fig-cap: "Number of Songs Per Key"
+#| fig-subcap: ["Major", "Minor"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name", y = "Number of Songs in Key")
+
+clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name", y = "Number of Songs in Key")
+
+```
+Based on @fig-allkeycounts, in major key, Boogie uses major keys around C# the most. However for minor keys this is the exact opposite, meaning he uses minor keys around C# the least. Instead he uses the F and G minor keys often.
+
+```{r}
+#| label: fig-energy
+#| fig-cap: "Energy Level Distribution For Boogie Songs"
+#| fig-subcap: ["Major", "Minor"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+# For Discussion say they based on this hist there doesn't seem to be a difference
+# in the energy levels of a song given the key
 
 clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(energy)) +
   geom_histogram(binwidth = 0.03) + theme_minimal() + 
-  labs(x = "Energy", y = "Number of Songs (In Major Keys)")
+  labs(x = "Energy", y = "Number of Songs")
 
 clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(energy)) +
   geom_histogram(binwidth = 0.03) + theme_minimal() + 
-  labs(x = "Energy", y = "Number of Songs (In Minor Keys)")
+  labs(x = "Energy", y = "Number of Songs")
 
 ```
+Based on @fig-energy, both the distribution of energy level per songs for major and minor keys appear to be approximatley normal and sysmetric. Moreover, both histograms show that Boggie's songs energy levels are usually around 0.6.
 
