@@ -4,7 +4,6 @@ author:
   - Lexun Yu
   - Colin Sihan Yang
   - Siddharth Gowda
-  - Tanmay Shinde
 date: today
 date-format: long
 abstract: "Use the Spotify API to analyze data about ... "
@@ -12,3 +11,43 @@ format: pdf
 number-sections: true
 bibliography: references.bib
 ---
+
+
+# Introduction
+
+
+
+# Data
+
+```{r}
+clean_boogie_data <- read_csv("../data/clean_data.csv")
+
+```
+
+
+# Results
+
+```{r}
+
+clean_boogie_data %>% ggplot(aes(mode_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Type (Major or Minor)", y = "Number of Songs")
+
+clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name (Majors)", y = "Number of Songs in Key")
+
+clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
+  geom_bar() + theme_minimal() + labs(x = "Key Name (Minors)", y = "Number of Songs in Key")
+
+```
+```{r}
+
+clean_boogie_data %>% filter(mode_name == "major") %>% ggplot(aes(energy)) +
+  geom_histogram(binwidth = 0.03) + theme_minimal() + 
+  labs(x = "Energy", y = "Number of Songs (In Major Keys)")
+
+clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(energy)) +
+  geom_histogram(binwidth = 0.03) + theme_minimal() + 
+  labs(x = "Energy", y = "Number of Songs (In Minor Keys)")
+
+```
+
