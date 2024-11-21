@@ -1,5 +1,6 @@
 ---
-title: "Analysis of three artists' Spotify Data"
+title: "Exploring Musical Trends: Analyzing Song Durations, Keys, and Energy Levels"
+subtitle: "A Comparative Study of A Boogie Wit Da Hoodie, Pay Money To My Pain, and Radiohead Using Spotify Metadata"
 author: 
   - Lexun Yu
   - Colin Sihan Yang
@@ -7,7 +8,7 @@ author:
   - Yuxuan Wei
 date: today
 date-format: long
-abstract: "Use the Spotify API to analyze data about three artists A Boogie Wit da Hoodie, Radiohead and Pay money To my Pain."
+abstract: "This paper analyzes metadata for songs by A Boogie Wit Da Hoodie, Pay Money To My Pain (PTP), and Radiohead, focusing on trends in song durations, key usage, and energy levels. A Boogie’s recent albums feature shorter songs, reflecting modern media influences, while PTP’s 2014 album shows wide duration variability, likely tied to emotional tributes to their late vocalist. Radiohead maintains consistent song durations, emphasizing artistic experimentation over trends. Key analysis reveals A Boogie favors minor keys, with consistent energy levels across key types."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -46,6 +47,8 @@ clean_boogie_data <- read_csv(here("data/02-cleaned-data/clean_boogie_data.csv")
 # Introduction
 This paper download data of three artists "A Boogie Wit da Hoodie", "Radiohead" and "Pay money To my Pain" from Spotify API, and visualize the metadata obtained. First, we compare the length of released songs between the three artists in @sec-date-duration. Second, we types of keys in "A Boogie Wit da Hoodie", and visualize the Major and Minor keys in their songs in @sec-key.
 
+The analysis shows A Boogie Wit Da Hoodie’s recent albums have shorter songs, PTP’s 2014 album features a wide range of durations reflecting tributes to their late vocalist, and Radiohead maintains consistent durations. A Boogie favors minor keys, with contrasting usage of C# in major and minor keys, and energy levels are consistent across key types.
+
 This paper is written with the help of R [@citeR], and the following packages: spotifyr [@spotifyr], styler [@styler], tidyverse [@tidyverse], tinytex [@tinytex], usethis [@usethis], lintr [@lintr], here [@here], ggplot2 [@ggplot2], janitor [@janitor] and knitr [@knitr]. The data is downloaded from Spotify API [@spotify_api].
 
 
@@ -53,8 +56,8 @@ This paper is written with the help of R [@citeR], and the following packages: s
 ## Release Date and Duration {#sec-date-duration}
 ```{r}
 #| label: fig-dateduration
-#| fig-cap: The album release date vs duration of song 
-#| fig-subcap: ["boxplot for Boogie","Boxplot for PTP", "Boxplot for radiohead"] 
+#| fig-cap: Comparison of Song Durations Across Album Release Dates for Different Artists 
+#| fig-subcap: ["Boogie’s More Recent Albums Feature Shorter Songs","Ptp’s 2014 Album Shows a Wide Range of Song Durations", "Radiohead Maintains Consistent Song Durations Over Time"] 
 #| warning: false
 #| message: false
 #| echo: false
@@ -120,7 +123,7 @@ In this section we discuss the keys "A Boogie Wit da Hoodie" uses the most, and 
 
 ```{r}
 #| label: fig-majorvminor
-#| fig-cap: "Number of Songs In Major Key"
+#| fig-cap: "Boogie Uses Major Keys Around C# The Most"
 #| echo: false
 #| warning: false
 #| message: false
@@ -135,7 +138,7 @@ Based on @fig-majorvminor, Boogie With Da Hoodie has released more minor key son
 
 ```{r}
 #| label: fig-allkeycounts
-#| fig-cap: "Number of Songs Per Key"
+#| fig-cap: "Boogie Uses Minor Keys Around C# The Least and the F and G Minor Keys Often"
 #| fig-subcap: ["Major", "Minor"]
 #| layout-ncol: 2
 #| echo: false
@@ -149,11 +152,12 @@ clean_boogie_data %>% filter(mode_name == "minor") %>% ggplot(aes(key_name)) +
   geom_bar() + theme_minimal() + labs(x = "Key Name", y = "Number of Songs in Key")
 
 ```
+
 Based on @fig-allkeycounts, in major key, Boogie uses major keys around C# the most. However for minor keys this is the exact opposite, meaning he uses minor keys around C# the least. Instead he uses the F and G minor keys often.
 
 ```{r}
 #| label: fig-energy
-#| fig-cap: "Energy Level Distribution For Boogie Songs"
+#| fig-cap: "Energy Level Distribution For Boogie Songs is Normal and Sysmetric"
 #| fig-subcap: ["Major", "Minor"]
 #| layout-ncol: 2
 #| echo: false
